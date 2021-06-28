@@ -1,3 +1,12 @@
 extends layouts/main.pug
 
 block contents
+    video(src=`/${video.fileUrl}` controls=true)
+    .video-detail
+        h1=video.title
+        p=video.description
+        ul
+            each genre in video.genres
+                li=genre
+        a(href=`/videos/delete/${video._id}`) DELETE VIDEO
+        a(href=`/videos/edit/${video._id}`) EDIT VIDEO

@@ -2,14 +2,20 @@ import express from "express";
 import {
   deleteVideo,
   editVideo,
-  showVideo,
-  uploadVideo,
+  getShowVideo,
+  postShowVideo,
+  getUploadVideo,
+  postUploadVideo,
 } from "../controllers/videoController";
+import { uploadVideoFile } from "../middlewares";
 
 const videoRouter = express.Router();
 
-videoRouter.get("/upload", uploadVideo);
-videoRouter.get("/show/:id", showVideo);
+videoRouter
+  .route("/upload")
+  .get(getUploadVideo)
+  .post(uploadVideoFile, postUploadVideo);
+videoRouter.route("/show/:id").get(getShowVideo).post(postShowVideo);
 videoRouter.get("/delete/:id", deleteVideo);
 videoRouter.get("/edit/:id", editVideo);
 

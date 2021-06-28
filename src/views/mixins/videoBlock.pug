@@ -1,0 +1,7 @@
+mixin videoBlock(video={})
+    .videoBlock
+        video(src=video.fileUrl controls=true)
+        .videoBlock__video
+        span.videoBlock__title
+            a(href=`/videos/show/${video.id}`) #{video.title}
+
