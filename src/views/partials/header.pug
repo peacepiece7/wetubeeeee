@@ -1,0 +1,20 @@
+
+.header
+    .header__home
+        a(href="/") HOME
+    .header__search-bar
+        form(action="/search" method="post")
+            input(type="text" name="search" placeholder="find videos")
+            input(type="submit" value="search")
+    .header__manu
+        span.header__upload
+            a(href="/videos/upload") UPLOAD
+        span.header__profile
+            a(href="/users/profile/:id") PROFILE
+        span.header__logout
+            a(href="/users/logout") LOG OUT
+        span.header__join
+            a(href="users/join") JOIN
+        span.header__login
+            a(href="users/login") LOGI IN
+
