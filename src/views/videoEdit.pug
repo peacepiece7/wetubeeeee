@@ -1,3 +1,8 @@
 extends layouts/main.pug
 
 block contents
+    form(action=`/videos/edit/${video._id}` method="POST")
+        input(type="text" name="title" value=video.title)
+        input(type="text" name="description" value=video.description)
+        input(type="text" name="genres" value=`${video.genres.concat()}`)
+        input(type="submit" value="EDIT")

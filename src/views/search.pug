@@ -3,11 +3,11 @@ include mixins/videoBlock
 
 block contents
     .videoSearch
-        each video in VIDEOS
+        each video in videos
             +videoBlock({
-                id : video._id,
-                fileUrl : video.fileUrl,
                 title : video.title,
                 description : video.description,
-                genre : video.genre,
+                genres : video.genres,
+                id : video._id,
+                fileUrl : video.fileUrl
             })
