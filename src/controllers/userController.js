@@ -1,11 +1,26 @@
 import User from "../models/WetubeUser.js";
+import bcrypt from "bcrypt";
 
-export const login = (req, res) => {
+export const getLogin = (req, res) => {
   res.render("login.pug");
+};
+export const postLogin = async (req, res) => {
+  const { name, password } = req.body;
+  const userDoc = await User.findOne({ name });
+  bcrypt.compare(password, userDoc.password, (error, success) => {
+    if (success) {
+      req.session.user = userDoc;
+      req.session.isLogined = true;
+      return res.status(200).redirect("/");
+    }
+    return res.status(400).redirect("/users/login");
+  });
 };
 
 export const logout = (req, res) => {
-  res.render("logout.pug");
+  req.session.user = null;
+  req.session.isLogined = false;
+  res.status(200).redirect("/");
 };
 
 export const getjoin = (req, res) => {

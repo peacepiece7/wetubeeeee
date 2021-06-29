@@ -1,7 +1,7 @@
 import multer from "multer";
 
 export const localMiddleware = (req, res, next) => {
-  // res.locals.isLogined = req.session.isLogined;
+  res.locals.isLogined = req.session.isLogined;
   res.locals.siteName = "wetube";
   next();
 };

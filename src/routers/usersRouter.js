@@ -2,15 +2,17 @@ import express from "express";
 import {
   editUser,
   getjoin,
-  login,
+  getLogin,
   logout,
   postjoin,
+  postLogin,
   profile,
 } from "../controllers/userController";
 
 const userRouter = express.Router();
 
-userRouter.get("/login", login);
+// LOGIN
+userRouter.route("/login").get(getLogin).post(postLogin);
 userRouter.get("/logout", logout);
 
 // JOIN
