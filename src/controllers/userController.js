@@ -1,5 +1,6 @@
 import User from "../models/WetubeUser.js";
 import bcrypt from "bcrypt";
+import fetch from "node-fetch";
 
 export const getLogin = (req, res) => {
   res.render("login.pug");
@@ -30,7 +31,18 @@ export const postjoin = async (req, res) => {
   const { name, email, password, password2 } = req.body;
   if (password !== password2) {
     console.log("password is not matched");
-    return res.end();
+    return res.redirect("/users/join");
+  }
+  // const user = await User.find({ $or: [{ name }, { email }] });
+  const user = await User.find({ name });
+  const userEmail = await User.find({ email });
+  if (userEmail) {
+    console.log("해당 이매일은 소셜 로그인으로 가입되어 있습니다.");
+    return res.redirect("/users/join");
+  }
+  if (user) {
+    console.log("이미 사용중인 아이디 입니다.");
+    return res.redirect("/users/join");
   }
   try {
     await User.create({
@@ -41,8 +53,7 @@ export const postjoin = async (req, res) => {
     return res.redirect("/");
   } catch (error) {
     console.log(error);
-    console.log("query occured some error");
-    return res.end();
+    return res.redirect("/users/join");
   }
 };
 
@@ -52,4 +63,81 @@ export const profile = (req, res) => {
 
 export const editUser = (req, res) => {
   res.render("userEdit.pug");
+};
+
+export const startGithubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: process.env.GIT_ID,
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  return res.redirect(finalUrl);
+};
+
+export const finishGithubLogin = async (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/access_token";
+  const config = {
+    client_id: process.env.GIT_ID,
+    client_secret: process.env.GIT_SECRET,
+    code: req.query.code,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalUrl = `${baseUrl}?${params}`;
+  const tokenRequest = await (
+    await fetch(finalUrl, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+  ).json();
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const apiUrl = "https://api.github.com";
+    const userData = await (
+      await fetch(`${apiUrl}/user`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    const emailData = await (
+      await fetch(`${apiUrl}/user/emails`, {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    let email = emailData.find(
+      (email) => email.primary === true && email.verified === true
+    );
+    // email is not existing
+    if (!email) {
+      console.log("email is not existing");
+      return res.redirect("/users/login");
+    }
+    // user data is exsisting
+    let user = await User.find({ email: email.email });
+    if (user) {
+      req.session.user = user;
+      req.session.isLogined = true;
+      return res.redirect("/users/login");
+    } else {
+      const user = await User.create({
+        name: userData.login,
+        email: email.email,
+        password: "",
+        socialLogin: true,
+      });
+      req.session.user = user;
+      req.session.isLogined = true;
+      return res.redirect("/users/login");
+    }
+  } else {
+    console.log("cant find access token");
+    return res.redirect("/users/login");
+  }
 };

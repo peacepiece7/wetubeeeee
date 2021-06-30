@@ -2,8 +2,7 @@ extends layouts/main.pug
 
 block contents
     .change-image
-        form(action=`/users${routes.userEdit}` method="post" enctype="multipart/form-data")
-            label(for="avatarUrl") Edit profile (if you have a profile Image it will be changed)
-                input(type="file" name="image")
+        form(action=`users/edit/${user._id}` method="post" enctype="multipart/form-data")
             input(type="text" name="name" value=user.name)
+            input(type="email" name="email" value=user.email)
             input(type="submit" value="Edit Profile")

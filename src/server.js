@@ -8,6 +8,7 @@ import videoRouter from "./routers/videoRouter";
 import bodyParser from "body-parser";
 import { localMiddleware } from "./middlewares";
 import MongoStore from "connect-mongo";
+import flash from "express-flash";
 
 const app = express();
 
@@ -31,6 +32,7 @@ app.use(
 );
 
 app.use(localMiddleware);
+app.use(flash());
 
 app.use("/", rootRouter);
 app.use("/users", userRouter);

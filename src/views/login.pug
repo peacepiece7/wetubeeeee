@@ -2,7 +2,7 @@ extends layouts/main.pug
 
 block contents
     form(action="/users/login" method="post")
-        input(type="text" name="name" placeholder="your name")
-        input(type="password" name="password" placeholder="enter a password")
+        input(type="text" name="name" required placeholder="your name")
+        input(type="password" name="password" required placeholder="enter a password")
         input(type="submit" value="LOGIN")
-    a(href="https://github.com/login/oauth/authorize?client_id=867d400b5194c0e36006") Continue with GITHUB
+    a(href="/users/github/start") Continue with GITHUB

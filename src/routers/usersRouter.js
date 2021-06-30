@@ -7,6 +7,8 @@ import {
   postjoin,
   postLogin,
   profile,
+  startGithubLogin,
+  finishGithubLogin,
 } from "../controllers/userController";
 
 const userRouter = express.Router();
@@ -20,5 +22,8 @@ userRouter.route("/join").get(getjoin).post(postjoin);
 
 userRouter.get("/profile/:id", profile);
 userRouter.get("/edit/:id", editUser);
+
+userRouter.get("/github/start", startGithubLogin);
+userRouter.get("/github/finish", finishGithubLogin);
 
 export default userRouter;
