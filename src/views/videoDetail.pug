@@ -1,7 +1,7 @@
 extends layouts/main.pug
 
 block contents
-    video.video(src=`/${video.fileUrl}` controls=true style="max-width: 300px; max-hight:300px")
+    video.video(src=video.fileUrl controls=true style="max-width: 300px; max-hight:300px")
     .video-detail
         h1=video.title
         p=video.description
