@@ -21,7 +21,7 @@ const multerUploader = multerS3({
 
 export const localMiddleware = (req, res, next) => {
   res.locals.isLogined = req.session.isLogined;
-  res.locals.siteName = "wetube";
+  res.locals.siteName = "wetubeeeee";
   next();
 };
 
