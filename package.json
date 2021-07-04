@@ -4,6 +4,7 @@
   "description": "졸작",
   "main": "index.js",
   "scripts": {
+    "start" : "node build/init.js",
     "dev:server": "nodemon",
     "build": "babel src -d build",
     "dev:assets": "webpack --mode=development -w"
