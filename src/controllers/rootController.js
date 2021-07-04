@@ -3,7 +3,6 @@ import Video from "../models/Video.js";
 export const getRoot = async (req, res) => {
   try {
     const videos = await Video.find({});
-    req.flash("info", "WELLCOM TO THE WETUBE");
     return res.status(200).render("home.pug", { videos });
   } catch (error) {
     console.log(error);

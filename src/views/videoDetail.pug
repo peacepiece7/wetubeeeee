@@ -1,12 +1,29 @@
 extends layouts/main.pug
 
 block contents
-    video(src=`/${video.fileUrl}` controls=true style="max-width: 300px; max-hight:300px")
+    video.video(src=`/${video.fileUrl}` controls=true style="max-width: 300px; max-hight:300px")
     .video-detail
         h1=video.title
         p=video.description
         ul
             each genre in video.genres
                 li=genre
+        .video-player
+            .video-player__playBtn
+                button#playBtn PLAY
+            .video-player__volume
+                button#mutedBtn MUTE
+            .video-player__volume-bar
+                input#volumeBar(type="range", max=1, min=0, step=0.05)
+            .video-player__timeline
+                span#videoCurrentTime 00:00
+                span |
+                span#videoDuration 00:00
+            .video-player__timeline-bar
+                input#timeLineBar(type="range" min=0)
+            .video-player__fullScreen
+                button#fullScreenBtn Full Screen Btn
+
         a(href=`/videos/delete/${video._id}`) DELETE VIDEO
         a(href=`/videos/edit/${video._id}`) EDIT VIDEO
+    script(src="/assets/js/videoPlayer.js")

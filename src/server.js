@@ -2,6 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import session from "express-session";
+import helmet from "helmet";
 import rootRouter from "./routers/rootRouter";
 import userRouter from "./routers/usersRouter";
 import videoRouter from "./routers/videoRouter";
@@ -14,10 +15,17 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 
+app.use(
+  helmet({
+    contentSecurityPolicy: false,
+  })
+);
+
 app.set("views", process.cwd() + "/src/views");
 
 app.engine("pug", require("pug").__express);
 app.use("/tmp", express.static("tmp"));
+app.use("/assets", express.static("assets"));
 
 app.use(
   session({

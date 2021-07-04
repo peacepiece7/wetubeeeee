@@ -1,4 +1,4 @@
-import User from "../models/WetubeUser.js";
+import User from "../models/User.js";
 import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
@@ -12,6 +12,7 @@ export const postLogin = async (req, res) => {
     if (success) {
       req.session.user = userDoc;
       req.session.isLogined = true;
+      req.flash("info", "로그인 되었습니다.");
       return res.status(200).redirect("/");
     }
     return res.status(400).redirect("/users/login");
@@ -19,8 +20,8 @@ export const postLogin = async (req, res) => {
 };
 
 export const logout = (req, res) => {
-  req.session.user = null;
-  req.session.isLogined = false;
+  req.session.destroy();
+  req.flash("info", "로그아웃 되었습니다.");
   res.status(200).redirect("/");
 };
 
@@ -30,12 +31,12 @@ export const getjoin = (req, res) => {
 export const postjoin = async (req, res) => {
   const { name, email, password, password2 } = req.body;
   if (password !== password2) {
-    console.log("password is not matched");
+    req.flash("error", "패스워드가 일치하지 않습니다.");
     return res.redirect("/users/join");
   }
   // const user = await User.find({ $or: [{ name }, { email }] });
-  const user = await User.find({ name });
-  const userEmail = await User.find({ email });
+  const user = await User.findOne({ name });
+  const userEmail = await User.findOne({ email });
   if (userEmail) {
     console.log("해당 이매일은 소셜 로그인으로 가입되어 있습니다.");
     return res.redirect("/users/join");
@@ -50,9 +51,9 @@ export const postjoin = async (req, res) => {
       email,
       password,
     });
+    req.flash("error", "가입되었습니다.");
     return res.redirect("/");
   } catch (error) {
-    console.log(error);
     return res.redirect("/users/join");
   }
 };
@@ -120,10 +121,11 @@ export const finishGithubLogin = async (req, res) => {
       return res.redirect("/users/login");
     }
     // user data is exsisting
-    let user = await User.find({ email: email.email });
+    let user = await User.findOne({ email: email.email });
     if (user) {
       req.session.user = user;
       req.session.isLogined = true;
+      req.flash("info", "로그인 되었습니다.");
       return res.redirect("/users/login");
     } else {
       const user = await User.create({
@@ -134,6 +136,7 @@ export const finishGithubLogin = async (req, res) => {
       });
       req.session.user = user;
       req.session.isLogined = true;
+      req.flash("info", "로그인 되었습니다.");
       return res.redirect("/users/login");
     }
   } else {

@@ -1,6 +1,6 @@
 mixin videoBlock(video={})
     .videoBlock
-        video(src=video.fileUrl controls=true style="max-width: 300px; max-hight:300px")
+        video(src=video.fileUrl style="max-width: 300px; max-hight:300px")
         .videoBlock__video
         span.videoBlock__title
             a(href=`/videos/show/${video.id}`) #{video.title}

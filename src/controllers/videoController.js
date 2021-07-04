@@ -1,4 +1,3 @@
-import { ids } from "webpack";
 import Video from "../models/Video.js";
 
 // UPLOAD
@@ -6,6 +5,8 @@ export const getUploadVideo = (req, res) => {
   res.render("upload.pug", { pageTitle: "UPLOAD" });
 };
 export const postUploadVideo = async (req, res) => {
+  // fileUrl: req.file ? req.file.location : fileUrl,
+  console.log(req);
   const {
     body: { title, description, genres },
     file: { path },
@@ -19,7 +20,7 @@ export const postUploadVideo = async (req, res) => {
     });
     return res.status(200).redirect("/");
   } catch (error) {
-    console.log("false to make a video model");
+    req.flash("error", "비디오를 만드는데 실패했습니다.");
     return req.status(400).redirect("/");
   }
 };
@@ -34,8 +35,8 @@ export const getShowVideo = async (req, res) => {
     const video = await Video.findById({ _id: id });
     res.status(200).render("videoDetail.pug", { video });
   } catch (error) {
-    console.log(error);
-    res.sendStatus(400);
+    req.flash("error", "접근할 수 없는 비디오입니다.");
+    res.sendStatus(404);
   }
 };
 
@@ -45,9 +46,10 @@ export const deleteVideo = async (req, res) => {
   } = req;
   try {
     await Video.findByIdAndDelete({ _id: id });
-    return res.status(200).redorect("/");
+    req.flash("info", "비디오가 삭제 되었습니다.");
+    return res.status(200).redirect("/");
   } catch (error) {
-    console.log(error);
+    req.flash("error", "비디오를 지울 수 없습니다.");
     return res.status(200).redirect("/");
   }
 };
@@ -60,7 +62,7 @@ export const getEditVideo = async (req, res) => {
     const video = await Video.findById({ _id: id });
     return res.render("videoEdit.pug", { video });
   } catch (error) {
-    console.log(error);
+    req.flash("error", "접근할 수 없는 비디오입니다.");
     return res.status(400).redirect("/");
   }
 };
@@ -81,7 +83,7 @@ export const postEditVideo = async (req, res) => {
     );
     return res.status(200).redirect(`/videos/show/${id}`);
   } catch (error) {
-    console.log(error);
-    return res.status(400).redirect("/");
+    req.flash("error", "비디오 편집을 실패했습니다.");
+    return res.status(400).redirect(`/videos/show/${id}`);
   }
 };

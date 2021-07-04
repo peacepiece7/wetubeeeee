@@ -4,7 +4,7 @@ import bcrypt from "bcrypt";
 const UserSchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
+    require: true,
   },
   email: {
     type: String,
@@ -13,10 +13,6 @@ const UserSchema = new mongoose.Schema({
   password: {
     type: String,
     require: true,
-  },
-  githubId: {
-    type: String,
-    unique: true,
   },
   socialLogin: {
     type: Boolean,
@@ -31,6 +27,6 @@ UserSchema.pre("save", async function (next) {
     next();
   }
 });
-const UserModel = mongoose.model("WetubeUser", UserSchema);
+const UserModel = mongoose.model("User", UserSchema);
 
 export default UserModel;
