@@ -1,5 +1,5 @@
 import express from "express";
-import { getRoot, search } from "../controllers/rootController";
+import { getRoot, search, errorPage } from "../controllers/rootController";
 
 const rootRouter = express.Router();
 

@@ -10,20 +10,21 @@ import {
   startGithubLogin,
   finishGithubLogin,
 } from "../controllers/userController";
+import { onlyPrivate, onlyPublic } from "../middlewares";
 
 const userRouter = express.Router();
 
 // LOGIN
-userRouter.route("/login").get(getLogin).post(postLogin);
+userRouter.route("/login").get(onlyPublic, getLogin).post(postLogin);
 userRouter.get("/logout", logout);
 
 // JOIN
-userRouter.route("/join").get(getjoin).post(postjoin);
+userRouter.route("/join").get(onlyPublic, getjoin).post(postjoin);
 
-userRouter.get("/profile/:id", profile);
-userRouter.get("/edit/:id", editUser);
+userRouter.get("/profile/:id", onlyPrivate, profile);
+userRouter.get("/edit/:id", onlyPrivate, editUser);
 
-userRouter.get("/github/start", startGithubLogin);
-userRouter.get("/github/finish", finishGithubLogin);
+userRouter.get("/github/start", onlyPublic, startGithubLogin);
+userRouter.get("/github/finish", onlyPublic, finishGithubLogin);
 
 export default userRouter;

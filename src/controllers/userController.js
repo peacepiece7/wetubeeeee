@@ -3,11 +3,17 @@ import bcrypt from "bcrypt";
 import fetch from "node-fetch";
 
 export const getLogin = (req, res) => {
-  res.render("login.pug");
+  res.render("login.pug", { pageTitle: "LOGIN" });
 };
 export const postLogin = async (req, res) => {
   const { name, password } = req.body;
   const userDoc = await User.findOne({ name });
+  if (!userDoc) {
+    console.log(userDoc);
+    t;
+    req.flash("error", "아이디가 존재하지 않습니다.");
+    return res.redirect("/users/login");
+  }
   bcrypt.compare(password, userDoc.password, (error, success) => {
     if (success) {
       req.session.user = userDoc;
@@ -15,18 +21,18 @@ export const postLogin = async (req, res) => {
       req.flash("info", "로그인 되었습니다.");
       return res.status(200).redirect("/");
     }
-    return res.status(400).redirect("/users/login");
+    req.flash("error", "비밀번호 혹은 아이디가 일치하지 않습니다.");
+    return res.redirect("/users/login");
   });
 };
 
 export const logout = (req, res) => {
   req.session.destroy();
-  req.flash("info", "로그아웃 되었습니다.");
   res.status(200).redirect("/");
 };
 
 export const getjoin = (req, res) => {
-  res.render("join.pug");
+  res.render("join.pug", { pageTitle: "JOIN" });
 };
 export const postjoin = async (req, res) => {
   const { name, email, password, password2 } = req.body;
@@ -52,18 +58,18 @@ export const postjoin = async (req, res) => {
       password,
     });
     req.flash("error", "가입되었습니다.");
-    return res.redirect("/");
+    return res.status(200).redirect("/");
   } catch (error) {
-    return res.redirect("/users/join");
+    return res.status(400).send("ERROR");
   }
 };
 
 export const profile = (req, res) => {
-  res.render("userProfile.pug");
+  res.render("userProfile.pug", { pageTitle: "PROFILE" });
 };
 
 export const editUser = (req, res) => {
-  res.render("userEdit.pug");
+  res.render("userEdit.pug", { pageTitle: "EDIT USER" });
 };
 
 export const startGithubLogin = (req, res) => {
@@ -117,7 +123,7 @@ export const finishGithubLogin = async (req, res) => {
     );
     // email is not existing
     if (!email) {
-      console.log("email is not existing");
+      req.flash("error", "이메일을 찾을 수 없습니다.");
       return res.redirect("/users/login");
     }
     // user data is exsisting
@@ -126,7 +132,7 @@ export const finishGithubLogin = async (req, res) => {
       req.session.user = user;
       req.session.isLogined = true;
       req.flash("info", "로그인 되었습니다.");
-      return res.redirect("/users/login");
+      return res.status(200).redirect("/");
     } else {
       const user = await User.create({
         name: userData.login,
@@ -137,10 +143,10 @@ export const finishGithubLogin = async (req, res) => {
       req.session.user = user;
       req.session.isLogined = true;
       req.flash("info", "로그인 되었습니다.");
-      return res.redirect("/users/login");
+      return res.status(200).redirect("/");
     }
   } else {
     console.log("cant find access token");
-    return res.redirect("/users/login");
+    return res.status(400).send("ERROR");
   }
 };

@@ -23,7 +23,7 @@ block contents
                 input#timeLineBar(type="range" min=0)
             .video-player__fullScreen
                 button#fullScreenBtn Full Screen Btn
-
-        a(href=`/videos/delete/${video._id}`) DELETE VIDEO
-        a(href=`/videos/edit/${video._id}`) EDIT VIDEO
+        if creator == video.creator
+            a(href=`/videos/delete/${video._id}`) DELETE VIDEO
+            a(href=`/videos/edit/${video._id}`) EDIT VIDEO
     script(src="/assets/js/videoPlayer.js")

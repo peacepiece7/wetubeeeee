@@ -10,6 +10,7 @@ export const postUploadVideo = async (req, res) => {
   const {
     body: { title, description, genres },
     file: { path },
+    session: { user },
   } = req;
   try {
     await Video.create({
@@ -17,6 +18,7 @@ export const postUploadVideo = async (req, res) => {
       title,
       description,
       genres: genres.split(","),
+      creator: user._id,
     });
     return res.status(200).redirect("/");
   } catch (error) {
@@ -30,10 +32,18 @@ export const getShowVideo = async (req, res) => {
   const {
     params: { id },
   } = req;
-
+  const { user } = req.session;
+  let creator;
+  if (!user) {
+    creator = null;
+  } else {
+    creator = user._id;
+  }
   try {
     const video = await Video.findById({ _id: id });
-    res.status(200).render("videoDetail.pug", { video });
+    res
+      .status(200)
+      .render("videoDetail.pug", { pageTitle: video.title, video, creator });
   } catch (error) {
     req.flash("error", "접근할 수 없는 비디오입니다.");
     res.sendStatus(404);
@@ -50,7 +60,7 @@ export const deleteVideo = async (req, res) => {
     return res.status(200).redirect("/");
   } catch (error) {
     req.flash("error", "비디오를 지울 수 없습니다.");
-    return res.status(200).redirect("/");
+    return res.status(400).redirect("/");
   }
 };
 
@@ -60,7 +70,10 @@ export const getEditVideo = async (req, res) => {
   } = req;
   try {
     const video = await Video.findById({ _id: id });
-    return res.render("videoEdit.pug", { video });
+    return res.status(200).render("videoEdit.pug", {
+      pageTitle: `EDIT : ${video.title}`,
+      video,
+    });
   } catch (error) {
     req.flash("error", "접근할 수 없는 비디오입니다.");
     return res.status(400).redirect("/");
