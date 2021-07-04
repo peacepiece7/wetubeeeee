@@ -17,18 +17,20 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "d
 
 _dotenv["default"].config();
 
-var s3 = new _awsSdk["default"].S3({
+/*
+const s3 = new aws.S3({
   credentials: {
     accessKeyId: process.env.AWS_ID,
-    secretAccessKey: process.env.AWS_SECRET
-  }
-});
-var multerUploader = (0, _multerS["default"])({
-  s3: s3,
-  bucket: "wetubeeee",
-  acl: "public-read"
+    secretAccessKey: process.env.AWS_SECRET,
+  },
 });
 
+const multerUploader = multerS3({
+  s3: s3,
+  bucket: "wetubeeee",
+  acl: "public-read",
+});
+*/
 var localMiddleware = function localMiddleware(req, res, next) {
   res.locals.isLogined = req.session.isLogined;
   res.locals.siteName = "wetube";
@@ -57,25 +59,24 @@ var onlyPublic = function onlyPublic(req, res, next) {
   return res.sendStatus(404);
 }; // Local storage path
 
-/*
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "tmp/videos/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.fieldname + "-" + Date.now());
-  },
-});
-*/
-
 
 exports.onlyPublic = onlyPublic;
+
+var storage = _multer["default"].diskStorage({
+  destination: function destination(req, file, cb) {
+    cb(null, "tmp/videos/");
+  },
+  filename: function filename(req, file, cb) {
+    cb(null, file.fieldname + "-" + Date.now());
+  }
+});
+
 var upload = (0, _multer["default"])({
   dest: "tmp/videos",
   limits: {
     fileSize: 10000000
   },
-  storage: multerUploader
+  storage: storage
 });
 var uploadVideoFile = upload.single("videoFile");
 exports.uploadVideoFile = uploadVideoFile;

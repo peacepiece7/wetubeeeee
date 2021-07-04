@@ -5,6 +5,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.search = exports.getRoot = void 0;
 
+require("regenerator-runtime");
+
 var _Video = _interopRequireDefault(require("../models/Video.js"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
