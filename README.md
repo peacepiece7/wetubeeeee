@@ -6,3 +6,4 @@
 - comment section
 - s3
 - User profile 
+- Full screen
