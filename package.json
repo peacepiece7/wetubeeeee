@@ -5,8 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/init.js",
+    "build" : "npm run build:server && npm run build:assets",
     "dev:server": "nodemon",
-    "build": "babel src -d build",
+    "build:server": "babel src -d build",
+    "build:assets": "webpack --mode=production",
     "dev:assets": "webpack --mode=development -w"
   },
   "author": "peacepiece7",
