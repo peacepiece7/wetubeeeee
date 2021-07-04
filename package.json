@@ -4,7 +4,7 @@
   "description": "졸작",
   "main": "index.js",
   "scripts": {
-    "start" : "node build/init.js",
+    "start": "node build/init.js",
     "dev:server": "nodemon",
     "build": "babel src -d build",
     "dev:assets": "webpack --mode=development -w"
@@ -27,7 +27,8 @@
     "mongoose": "^5.12.15",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
-    "node-fetch": "^2.6.1"
+    "node-fetch": "^2.6.1",
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",

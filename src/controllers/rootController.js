@@ -1,3 +1,4 @@
+import "regenerator-runtime";
 import Video from "../models/Video.js";
 
 export const getRoot = async (req, res) => {
