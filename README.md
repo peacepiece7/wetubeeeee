@@ -1,7 +1,9 @@
 졸작
 
-[ ] sass
+### TO DO
 
-[ ] comment section
+sass
 
-[ ] s3
+comment section
+
+s3
