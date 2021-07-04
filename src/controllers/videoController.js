@@ -6,15 +6,14 @@ export const getUploadVideo = (req, res) => {
 };
 export const postUploadVideo = async (req, res) => {
   // fileUrl: req.file ? req.file.location : fileUrl,
-  console.log(req);
   const {
     body: { title, description, genres },
-    file: { path },
+    file: { fileUrl },
     session: { user },
   } = req;
   try {
     await Video.create({
-      fileUrl: path,
+      fileUrl: req.file ? req.file.location : fileUrl,
       title,
       description,
       genres: genres.split(","),
@@ -37,7 +36,7 @@ export const getShowVideo = async (req, res) => {
   if (!user) {
     creator = null;
   } else {
-    creator = user._id;
+    creator = user;
   }
   try {
     const video = await Video.findById({ _id: id });
