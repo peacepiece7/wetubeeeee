@@ -2,8 +2,7 @@
 
 ### TO DO
 
-sass
-
-comment section
-
-s3
+- sass
+- comment section
+- s3
+- User profile 
