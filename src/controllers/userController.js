@@ -44,11 +44,11 @@ export const postjoin = async (req, res) => {
   const user = await User.findOne({ name });
   const userEmail = await User.findOne({ email });
   if (userEmail) {
-    console.log("해당 이매일은 소셜 로그인으로 가입되어 있습니다.");
+    req.flash("error", "해당 이매일은 소셜 로그인으로 가입되어 있습니다.");
     return res.redirect("/users/join");
   }
   if (user) {
-    console.log("이미 사용중인 아이디 입니다.");
+    req.flash("error", "이미 사용중인 아이디 입니다.");
     return res.redirect("/users/join");
   }
   try {
@@ -57,10 +57,11 @@ export const postjoin = async (req, res) => {
       email,
       password,
     });
-    req.flash("error", "가입되었습니다.");
+    req.flash("info", "가입되었습니다.");
     return res.status(200).redirect("/");
   } catch (error) {
-    return res.status(400).send("ERROR");
+    req.flash("error", "가입에 실패했습니다.");
+    return res.status(400).redirect("/");
   }
 };
 
