@@ -8,22 +8,23 @@ export const postUploadVideo = async (req, res) => {
   // fileUrl: req.file ? req.file.location : fileUrl,
   const {
     body: { title, description, genres },
-    file: { fileUrl },
+    file: { location },
   } = req;
+  console.log(req.session.user._id);
   try {
     const newVideo = await Video.create({
-      fileUrl: req.file ? req.file.location : fileUrl,
+      fileUrl: location,
       title,
       description,
       genres: genres.split(","),
-      creator: req.user._id,
+      creator: req.session.user.id,
     });
     req.user.videos.push(newVideo.id);
     req.user.save();
     return res.status(200).redirect("/");
   } catch (error) {
     req.flash("error", "비디오를 만드는데 실패했습니다.");
-    return req.status(400).redirect("/");
+    return res.status(400).redirect("/");
   }
 };
 
