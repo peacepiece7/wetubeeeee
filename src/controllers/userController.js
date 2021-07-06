@@ -51,6 +51,7 @@ export const postjoin = async (req, res) => {
     req.flash("error", "이미 사용중인 아이디 입니다.");
     return res.redirect("/users/join");
   }
+  console.log("create user data");
   try {
     await User.create({
       name,
@@ -60,6 +61,7 @@ export const postjoin = async (req, res) => {
     req.flash("info", "가입되었습니다.");
     return res.status(200).redirect("/");
   } catch (error) {
+    console.log(error);
     req.flash("error", "가입에 실패했습니다.");
     return res.status(400).redirect("/");
   }
