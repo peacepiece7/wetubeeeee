@@ -26,4 +26,6 @@ block contents
         if creator == video.creator
             a(href=`/videos/delete/${video._id}`) DELETE VIDEO
             a(href=`/videos/edit/${video._id}`) EDIT VIDEO
+        form(action="comment" method="post")
+            input(type="textarea" name="" style="width : 600px; height:100px;")
     script(src="/assets/js/videoPlayer.js")

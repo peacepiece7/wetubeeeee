@@ -3,11 +3,12 @@ dotenv.config();
 import express from "express";
 import session from "express-session";
 import helmet from "helmet";
-import rootRouter from "./routers/rootRouter";
-import userRouter from "./routers/usersRouter";
-import videoRouter from "./routers/videoRouter";
+import rootRouter from "./routers/rootRouter.js";
+import userRouter from "./routers/usersRouter.js";
+import videoRouter from "./routers/videoRouter.js";
+import apiRouter from "./routers/apiRouter.js";
 import bodyParser from "body-parser";
-import { localMiddleware } from "./middlewares";
+import { localMiddleware } from "./middlewares.js";
 import MongoStore from "connect-mongo";
 import flash from "express-flash";
 
@@ -45,5 +46,6 @@ app.use(flash());
 app.use("/", rootRouter);
 app.use("/users", userRouter);
 app.use("/videos", videoRouter);
+app.use("/apis", apiRouter);
 
 export default app;

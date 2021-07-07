@@ -7,8 +7,6 @@ import {
   postjoin,
   postLogin,
   profile,
-  startGithubLogin,
-  finishGithubLogin,
 } from "../controllers/userController";
 import { onlyPrivate, onlyPublic } from "../middlewares";
 
@@ -23,8 +21,5 @@ userRouter.route("/join").get(onlyPublic, getjoin).post(postjoin);
 
 userRouter.get("/profile/:id", onlyPrivate, profile);
 userRouter.get("/edit/:id", onlyPrivate, editUser);
-
-userRouter.get("/github/start", onlyPublic, startGithubLogin);
-userRouter.get("/github/finish", onlyPublic, finishGithubLogin);
 
 export default userRouter;
