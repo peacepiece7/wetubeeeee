@@ -1,6 +1,5 @@
 import User from "../models/User.js";
 import bcrypt from "bcrypt";
-import fetch from "node-fetch";
 
 export const getLogin = (req, res) => {
   res.render("login.pug", { pageTitle: "LOGIN" });

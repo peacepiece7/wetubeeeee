@@ -1,3 +1,6 @@
+import User from "../models/User.js";
+import fetch from "node-fetch";
+
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
