@@ -1,4 +1,6 @@
 import User from "../models/User.js";
+import Video from "../models/Video.js";
+import Comment from "../models/Comment.js";
 import fetch from "node-fetch";
 
 export const startGithubLogin = (req, res) => {
@@ -78,4 +80,31 @@ export const finishGithubLogin = async (req, res) => {
     console.log("cant find access token");
     return res.status(400).send("ERROR");
   }
+};
+
+export const getComments = async (req, res) => {
+  const { name } = req.session.user; // user id
+  const { id } = req.params;
+  const { text } = req.body;
+  const video = await Video.findById(id);
+  try {
+    const newComment = await Comment.create({
+      creator: name,
+      content: text,
+      videoId: id,
+    });
+    await video.comments.push(newComment._id);
+    video.save();
+  } catch (error) {
+    console.log(error);
+  }
+  /*
+  const url = `https://localhost:${process.env.PORT}/apis${req.path}`;
+  await fetch(url, {
+    method : "POST",
+    headers:{
+      'Content-Type': 'application/json'
+    }
+  })
+*/
 };

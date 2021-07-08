@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node build/init.js",
-    "build" : "npm run build:server && npm run build:assets",
+    "build": "npm run build:server && npm run build:assets",
     "dev:server": "nodemon",
     "build:server": "babel src -d build",
     "build:assets": "webpack --mode=production",
@@ -29,10 +29,10 @@
     "mongoose": "^5.12.15",
     "morgan": "^1.10.0",
     "multer": "^1.4.2",
+    "multer-s3": "^2.9.0",
     "node-fetch": "^2.6.1",
-    "regenerator-runtime": "^0.13.7",
     "pug": "^3.0.2",
-    "multer-s3": "^2.9.0"
+    "regenerator-runtime": "^0.13.7"
   },
   "devDependencies": {
     "@babel/cli": "^7.14.5",

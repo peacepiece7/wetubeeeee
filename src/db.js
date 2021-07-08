@@ -1,5 +1,8 @@
 import dotenv from "dotenv";
 dotenv.config();
+import "./models/Comment.js";
+import "./models/Video.js";
+import "./models/User.js";
 const mongoose = require("mongoose");
 
 mongoose.connect(process.env.MONGO_URL, {
