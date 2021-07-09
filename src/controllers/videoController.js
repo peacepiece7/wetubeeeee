@@ -13,7 +13,7 @@ export const postUploadVideo = async (req, res) => {
   } = req;
   try {
     await Video.create({
-      fileUrl: location,
+      fileUrl: req.file ? location : fileUrl,
       title,
       description,
       genres: genres.split(","),
