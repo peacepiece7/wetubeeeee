@@ -2,7 +2,7 @@ import dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import session from "express-session";
-import helmet from "helmet";
+// import helmet from "helmet";
 import rootRouter from "./routers/rootRouter.js";
 import userRouter from "./routers/usersRouter.js";
 import videoRouter from "./routers/videoRouter.js";
@@ -17,11 +17,13 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+/*
 app.use(
   helmet({
     contentSecurityPolicy: false,
   })
 );
+*/
 
 app.set("views", process.cwd() + "/src/views");
 

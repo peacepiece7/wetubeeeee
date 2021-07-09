@@ -20,6 +20,7 @@ export const search = async (req, res) => {
       .status(200)
       .render("search.pug", { pageTitle: "SEARCH", videos });
   } catch (error) {
+    // 이 부분도 고치자
     console.log(error);
     return res.send("검색 결과과 없습니다.");
   }

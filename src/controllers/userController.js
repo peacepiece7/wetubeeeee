@@ -8,7 +8,6 @@ export const postLogin = async (req, res) => {
   const { name, password } = req.body;
   const userDoc = await User.findOne({ name });
   if (!userDoc) {
-    console.log(userDoc);
     req.flash("error", "아이디가 존재하지 않습니다.");
     return res.redirect("/users/login");
   }
@@ -17,9 +16,8 @@ export const postLogin = async (req, res) => {
       req.session.user = userDoc;
       req.session.isLogined = true;
       req.flash("info", "로그인 되었습니다.");
-      return res.status(200).redirect("/");
+      return res.redirect("/");
     } else {
-      console.log(error);
       req.flash("error", "비밀번호 혹은 아이디가 일치하지 않습니다.");
       return res.status(400).redirect("/users/login");
     }
@@ -51,7 +49,6 @@ export const postjoin = async (req, res) => {
     req.flash("error", "이미 사용중인 아이디 입니다.");
     return res.redirect("/users/join");
   }
-  console.log("create user data");
   try {
     await User.create({
       name,

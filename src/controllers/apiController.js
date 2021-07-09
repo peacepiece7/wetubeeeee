@@ -77,13 +77,12 @@ export const finishGithubLogin = async (req, res) => {
       return res.status(200).redirect("/");
     }
   } else {
-    console.log("cant find access token");
-    return res.status(400).send("ERROR");
+    return res.sendStatus(400);
   }
 };
 
 export const getComments = async (req, res) => {
-  const { name } = req.session.user; // user id
+  const { name } = req.session.user;
   const { id } = req.params;
   const { text } = req.body;
   const video = await Video.findById(id);
@@ -97,14 +96,7 @@ export const getComments = async (req, res) => {
     video.save();
   } catch (error) {
     console.log(error);
+    req.flash("error", "댓글 기능을 사용할 수 없습니다.");
+    return res.status(404).redirect("/");
   }
-  /*
-  const url = `https://localhost:${process.env.PORT}/apis${req.path}`;
-  await fetch(url, {
-    method : "POST",
-    headers:{
-      'Content-Type': 'application/json'
-    }
-  })
-*/
 };

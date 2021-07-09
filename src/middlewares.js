@@ -53,7 +53,7 @@ const storage = multer.diskStorage({
 const upload = multer({
   dest: "tmp/videos",
   limits: {
-    fileSize: 10000000,
+    fileSize: 20000000,
   },
   storage: multerUploader,
 });

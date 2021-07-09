@@ -18,6 +18,15 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     defualt: false,
   },
+  /*
+  어떻게 집어 넣을지 생각해보자.. schema를 하나더 만들던가..
+  videos: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Video",
+    },
+  ],
+  */
 });
 
 UserSchema.pre("save", async function (next) {

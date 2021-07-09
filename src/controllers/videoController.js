@@ -12,15 +12,13 @@ export const postUploadVideo = async (req, res) => {
     file: { location },
   } = req;
   try {
-    const newVideo = await Video.create({
+    await Video.create({
       fileUrl: location,
       title,
       description,
       genres: genres.split(","),
-      creator: req.session.user.id,
+      creator: req.session.user._id,
     });
-    req.user.videos.push(newVideo.id);
-    req.user.save();
     return res.status(200).redirect("/");
   } catch (error) {
     req.flash("error", "비디오를 만드는데 실패했습니다.");
@@ -40,7 +38,6 @@ export const getShowVideo = async (req, res) => {
   } else {
     creator = user;
   }
-  console.log(creator);
   try {
     const video = await Video.findById({ _id: id });
     res
