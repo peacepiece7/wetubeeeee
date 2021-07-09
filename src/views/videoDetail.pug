@@ -24,9 +24,8 @@ block contents
                 input#timeLineBar(type="range" min=0)
             .video-player__fullScreen
                 button#fullScreenBtn Full Screen Btn
-        if creator == video.creator
             a(href=`/videos/delete/${video._id}`) DELETE VIDEO
-            a(href=`/videos/edit/${video._id}`) EDIT VIDEO\
+            a(href=`/videos/edit/${video._id}`) EDIT VIDEO
             form#video-comments-form
                 input(type="textarea" name="comment" style="width : 600px; height:100px;")
                 button#submitCommentBtn Post Submit!

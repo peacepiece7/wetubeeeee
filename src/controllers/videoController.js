@@ -6,11 +6,11 @@ export const getUploadVideo = (req, res) => {
 };
 export const postUploadVideo = async (req, res) => {
   // fileUrl: req.file ? req.file.location : fileUrl,
+  // 삼항 연산자로 location을 고치거나, 비디오를 업로드할 땐 heroku에서 할 것.
   const {
     body: { title, description, genres },
     file: { location },
   } = req;
-  console.log(req.session.user._id);
   try {
     const newVideo = await Video.create({
       fileUrl: location,
@@ -40,6 +40,7 @@ export const getShowVideo = async (req, res) => {
   } else {
     creator = user;
   }
+  console.log(creator);
   try {
     const video = await Video.findById({ _id: id });
     res
